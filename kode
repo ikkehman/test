@@ -1,0 +1,28 @@
+$("#txtAutocomplete").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: search.php,//url
+                data: { prefixText: request.term },
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                      return {
+                        label: item.value,
+                        value: item.value, 
+                        id: item.id,
+                        type: item.type
+                      }
+                   }))
+                },
+                error: function (xhr, status, err) {
+                    alert("Error")
+                }
+            });
+        },
+        select: function (even, ui) {
+            $("#id").val(ui.item.id);
+            $("#name").val(ui.item.value);
+            $("#type").val(ui.item.type);
+        }
+    });
